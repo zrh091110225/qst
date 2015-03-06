@@ -7,6 +7,8 @@ package org.qunar.qst.qst.web.account;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ import org.qunar.qst.qst.service.account.AccountService;
 @Controller
 @RequestMapping(value = "/register")
 public class RegisterController {
-
+    private static Logger log = LoggerFactory.getLogger(RegisterController.class);
 	@Autowired
 	private AccountService accountService;
 
@@ -48,8 +50,10 @@ public class RegisterController {
 	@ResponseBody
 	public String checkLoginName(@RequestParam("loginName") String loginName) {
 		if (accountService.findUserByLoginName(loginName) == null) {
+            log.info("用户名={}唯一",loginName);
 			return "true";
 		} else {
+            log.info("用户名={}不唯一",loginName);
 			return "false";
 		}
 	}
